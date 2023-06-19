@@ -19,7 +19,7 @@ interface UseCallApiResponse {
   error: unknown
 }
 
-export const useCallApi = async (props: UseCallApiProps): Promise<UseCallApiResponse> => {
+export const apiCall = async (props: UseCallApiProps): Promise<UseCallApiResponse> => {
   const { endPoint, headers, method, params, payload } = props
 
   try {

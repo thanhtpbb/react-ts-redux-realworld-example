@@ -24,5 +24,4 @@ The general architecture of the app is based on a combination of React, TypeScri
 
 # Getting started
 
-> pnpm install
-> pnpm dev
+> pnpm install && pnpm dev

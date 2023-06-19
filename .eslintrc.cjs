@@ -1,14 +1,9 @@
 module.exports = {
-  extends: ['react-app', 'react-app/jest', 'prettier'],
+  env: { browser: true, es2020: true, node: true },
+  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'plugin:react-hooks/recommended'],
   parser: '@typescript-eslint/parser',
-  parserOptions: {
-    ecmaFeatures: {
-      jsx: true,
-    },
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-  },
-  plugins: ['react', '@typescript-eslint'],
+  parserOptions: { ecmaVersion: 'latest', sourceType: 'module' },
+  plugins: ['react-refresh'],
   rules: {
     'jsx-a11y/anchor-is-valid': 'off',
     'react-hooks/exhaustive-deps': 'off',
