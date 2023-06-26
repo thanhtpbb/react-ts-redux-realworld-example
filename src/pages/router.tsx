@@ -17,7 +17,14 @@ const Settings = React.lazy(() => import('./Settings'))
 const AppRoutes: React.FC = () => {
   return (
     <Routes>
-      <Route path={ROUTER.HOME} element={<BaseLayout />}>
+      <Route
+        path={ROUTER.HOME}
+        element={
+          <Suspense fallback={<PageLoader />}>
+            <BaseLayout />
+          </Suspense>
+        }
+      >
         <Route
           path={ROUTER.HOME}
           element={
@@ -38,11 +45,11 @@ const AppRoutes: React.FC = () => {
           <Route path={ROUTER.REGISTER} element={<Register />} />
         </Route>
         <Route path={ROUTER.SETTINGS} element={<Settings />} />
-        {/* <Route path={ROUTER.EDITOR} element={<Editor />} />
+        <Route path={ROUTER.EDITOR} element={<Editor />} />
         <Route path={ROUTER.EDITOR_EDIT} element={<Editor />} />
         <Route path={ROUTER.ARTICLE} element={<Article />} />
         <Route path={ROUTER.PROFILE} element={<Profile />} />
-        <Route path={ROUTER.PROFILE_FAVORITES} element={<Profile />} /> */}
+        <Route path={ROUTER.PROFILE_FAVORITES} element={<Profile />} />
         <Route path="*" element={<Navigate to={ROUTER.HOME} />} />
       </Route>
     </Routes>

@@ -1,18 +1,62 @@
+import { profileActions } from '@/actions/profile'
+import PageLoader from '@/components/PageLoader'
+import { useAuthContext } from '@/hooks/context'
+import { Profile as ProfileType } from '@/types/others/profile'
+import { useEffect, useMemo, useState } from 'react'
+import { useParams } from 'react-router-dom'
+
 const Profile = () => {
+  const [profile, setProfile] = useState<ProfileType>()
+  const [isFetchingProfile, setIsFetchingProfile] = useState<boolean>(false)
+
+  const { username } = useParams()
+
+  const {
+    state: { currentUser },
+  } = useAuthContext()
+
+  const fetchProfileByParam = () => {
+    if (!username) return
+    setIsFetchingProfile(true)
+    profileActions.getProfile(username, {
+      onSuccess: (fetchedProfile: ProfileType) => {
+        setProfile(fetchedProfile)
+        document.title = `@${fetchedProfile.username} - Conduit`
+        setIsFetchingProfile(false)
+      },
+    })
+  }
+
+  useEffect(() => {
+    fetchProfileByParam()
+  }, [])
+
+  const isSelfProfile = useMemo(() => profile?.username === currentUser?.username, [profile, currentUser])
+
+  if (!profile)
+    return isFetchingProfile ? <p style={{ display: 'flex', justifyContent: 'center' }}></p> : <PageLoader />
+
   return (
     <div className="profile-page">
       <div className="user-info">
         <div className="container">
           <div className="row">
             <div className="col-xs-12 col-md-10 offset-md-1">
-              <img src="http://i.imgur.com/Qr71crq.jpg" className="user-img" />
-              <h4>Eric Simons</h4>
-              <p>
-                Cofounder @GoThinkster, lived in Aol's HQ for a few months, kinda looks like Peeta from the Hunger Games
-              </p>
+              <img src={profile.image} className="user-img" />
+              <h4>{profile.username}</h4>
+              <p> {profile.bio}</p>
               <button className="btn btn-sm btn-outline-secondary action-btn">
-                <i className="ion-plus-round"></i>
-                &nbsp; Follow Eric Simons
+                {isSelfProfile ? (
+                  <>
+                    <i className="ion-gear-a"></i>
+                    &nbsp; Edit Profile Settings
+                  </>
+                ) : (
+                  <>
+                    <i className="ion-plus-round"></i>
+                    &nbsp; Follow {profile.username}
+                  </>
+                )}
               </button>
             </div>
           </div>
