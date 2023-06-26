@@ -1,7 +1,12 @@
 import { ROUTER } from '@/configs/router'
+import { useAuthContext } from '@/hooks/context'
 import { isLoggedin } from '@/utils/storage'
 
 const Header = () => {
+  const {
+    state: { currentUser },
+  } = useAuthContext()
+
   return (
     <nav className="navbar navbar-light">
       <div className="container">
@@ -24,6 +29,12 @@ const Header = () => {
               <li className="nav-item">
                 <a className="nav-link" href={ROUTER.SETTINGS}>
                   <i className="ion-gear-a"></i>&nbsp;Settings
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="">
+                  <img src={currentUser?.image} style={{ width: '26px', height: '26px', marginRight: '5px' }} />
+                  {currentUser?.username}
                 </a>
               </li>
             </>

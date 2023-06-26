@@ -1,1 +1,1 @@
-export const isLoggedin = !!localStorage.getItem('user')
+export const isLoggedin = !!localStorage.getItem('token')

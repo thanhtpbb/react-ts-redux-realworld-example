@@ -1,5 +1,8 @@
+import { IUser } from '@/types/models/IUser'
+
 export type AuthState = {
   isFetching: boolean
+  currentUser?: IUser
 }
 
 export enum AuthAction {
@@ -8,6 +11,7 @@ export enum AuthAction {
 
   REGISTER_SUCCESS = 'REGISTER_SUCCESS',
   LOGIN_SUCCESS = 'LOGIN_SUCCESS',
+  GET_CURRENT_USER_SUCCESS = 'GET_CURRENT_USER_SUCCESS',
 }
 
 interface AuthActionPending {
@@ -26,4 +30,14 @@ interface RegisterSuccess {
   type: AuthAction.REGISTER_SUCCESS
 }
 
-export type AuthActionType = AuthActionPending | AuthActionFailure | LoginSuccess | RegisterSuccess
+interface GetCurrentUserSuccess {
+  type: AuthAction.GET_CURRENT_USER_SUCCESS
+  payload: IUser
+}
+
+export type AuthActionType =
+  | AuthActionPending
+  | AuthActionFailure
+  | LoginSuccess
+  | RegisterSuccess
+  | GetCurrentUserSuccess

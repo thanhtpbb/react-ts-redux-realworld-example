@@ -1,4 +1,3 @@
-import { RegisterResponse } from '@/configs/api/response'
 import { useAuthContext } from '@/hooks/context'
 import { FormEvent, useLayoutEffect, useRef } from 'react'
 
@@ -28,9 +27,8 @@ const RegisterForm = () => {
     register(
       { user: { email, password, username } },
       {
-        onSuccess: (result: RegisterResponse) => {
+        onSuccess: () => {
           errorMessagesRef.current = []
-          localStorage.setItem('user', JSON.stringify(result.user))
           window.location.reload()
         },
         onError: ([errorsKey, errors]) => {

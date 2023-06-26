@@ -25,7 +25,7 @@ const LoginForm = () => {
       {
         onSuccess: (result: LoginResponse) => {
           errorMessagesRef.current = []
-          localStorage.setItem('user', JSON.stringify(result.user))
+          localStorage.setItem('token', result.user.token)
           window.location.reload()
         },
         onError: ([errorsKey, errors]) => {
