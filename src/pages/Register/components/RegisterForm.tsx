@@ -1,27 +1,69 @@
-import { useLayoutEffect } from 'react'
+import { RegisterResponse } from '@/configs/api/response'
+import { useAuthContext } from '@/hooks/context'
+import { FormEvent, useLayoutEffect, useRef } from 'react'
 
 const RegisterForm = () => {
+  const {
+    register,
+    state: { isFetching },
+  } = useAuthContext()
+
   useLayoutEffect(() => {
     document.title = 'Register - Conduit'
   }, [])
 
+  const usernameRef = useRef<HTMLInputElement>(null)
+  const emailRef = useRef<HTMLInputElement>(null)
+  const passwordRef = useRef<HTMLInputElement>(null)
+
+  const errorMessagesRef = useRef<string[]>([])
+  const errorMessagesKeyRef = useRef('')
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const username = usernameRef.current?.value || ''
+    const email = emailRef.current?.value || ''
+    const password = passwordRef.current?.value || ''
+
+    register(
+      { user: { email, password, username } },
+      {
+        onSuccess: (result: RegisterResponse) => {
+          errorMessagesRef.current = []
+          localStorage.setItem('user', JSON.stringify(result.user))
+          window.location.reload()
+        },
+        onError: ([errorsKey, errors]) => {
+          errorMessagesRef.current = [...errorMessagesRef.current, ...errors]
+          errorMessagesKeyRef.current = errorsKey
+        },
+      }
+    )
+  }
+
   return (
     <>
-      <ul className="error-messages">
-        <li>That email is already taken</li>
-      </ul>
+      {errorMessagesRef.current.length > 0 && (
+        <ul className="error-messages">
+          {errorMessagesRef.current.map((errorMessage, index) => (
+            <li key={index}>
+              {errorMessagesKeyRef.current} {errorMessage}
+            </li>
+          ))}
+        </ul>
+      )}
 
-      <form>
+      <form onSubmit={handleSubmit}>
         <fieldset className="form-group">
-          <input className="form-control form-control-lg" type="text" placeholder="Your Name" />
+          <input ref={usernameRef} className="form-control form-control-lg" type="text" placeholder="Your Name" />
         </fieldset>
         <fieldset className="form-group">
-          <input className="form-control form-control-lg" type="text" placeholder="Email" />
+          <input ref={emailRef} className="form-control form-control-lg" type="text" placeholder="Email" />
         </fieldset>
         <fieldset className="form-group">
-          <input className="form-control form-control-lg" type="password" placeholder="Password" />
+          <input ref={passwordRef} className="form-control form-control-lg" type="password" placeholder="Password" />
         </fieldset>
-        <button className="btn btn-lg btn-primary pull-xs-right">Sign up</button>
+        <button className="btn btn-lg btn-primary pull-xs-right"> {isFetching ? 'Loading...' : 'Sign up'}</button>
       </form>
     </>
   )

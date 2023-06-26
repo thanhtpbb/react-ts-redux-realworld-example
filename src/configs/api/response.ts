@@ -7,3 +7,7 @@ export interface GetTagsResponse {
 export interface LoginResponse {
   user: IUser
 }
+
+export interface RegisterResponse {
+  user: IUser
+}

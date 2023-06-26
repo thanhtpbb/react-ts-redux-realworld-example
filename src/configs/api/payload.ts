@@ -5,4 +5,12 @@ export interface LoginPayload {
   }
 }
 
-export type ApiEndPointPayload = LoginPayload
+export interface RegisterPayload {
+  user: {
+    email: string
+    password: string
+    username: string
+  }
+}
+
+export type ApiEndPointPayload = LoginPayload | RegisterPayload

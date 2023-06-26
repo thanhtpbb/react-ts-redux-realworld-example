@@ -10,6 +10,7 @@ const LoginForm = () => {
 
   const emailRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
+
   const errorMessagesRef = useRef<string[]>([])
   const errorMessagesKeyRef = useRef('')
 
