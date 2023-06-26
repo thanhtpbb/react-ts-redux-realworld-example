@@ -1,7 +1,13 @@
-import AuthLayout from '@/layouts/AuthLayout'
+import RegisterForm from './components/RegisterForm'
+import RegisterHeadings from './components/RegisterHeadings'
 
 const Register = () => {
-  return <AuthLayout>sdfsd</AuthLayout>
+  return (
+    <>
+      <RegisterHeadings />
+      <RegisterForm />
+    </>
+  )
 }
 
 export default Register

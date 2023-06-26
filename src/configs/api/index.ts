@@ -16,7 +16,7 @@ interface UseCallApiProps {
 
 interface UseCallApiResponse {
   response: AxiosResponse | null
-  error: unknown
+  error: any
 }
 
 export const apiCall = async (props: UseCallApiProps): Promise<UseCallApiResponse> => {

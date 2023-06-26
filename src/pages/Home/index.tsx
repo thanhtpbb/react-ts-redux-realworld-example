@@ -1,6 +1,11 @@
+import { useEffect } from 'react'
 import TagList from './components/TagList'
 
 const Home = () => {
+  useEffect(() => {
+    document.title = 'Home — Conduct'
+  }, [])
+
   return (
     <div className="home-page">
       <div className="banner">

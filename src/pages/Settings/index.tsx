@@ -1,4 +1,15 @@
+import { ROUTER } from '@/configs/router'
+import { useNavigate } from 'react-router-dom'
+
 const Settings = () => {
+  const navigate = useNavigate()
+
+  const handleLogoutButtonClick = () => {
+    localStorage.removeItem('user')
+    navigate(ROUTER.HOME, { replace: true })
+    window.location.reload()
+  }
+
   return (
     <div className="settings-page">
       <div className="container page">
@@ -31,7 +42,9 @@ const Settings = () => {
               </fieldset>
             </form>
             <hr />
-            <button className="btn btn-outline-danger">Or click here to logout.</button>
+            <button className="btn btn-outline-danger" onClick={handleLogoutButtonClick}>
+              Or click here to logout.
+            </button>
           </div>
         </div>
       </div>

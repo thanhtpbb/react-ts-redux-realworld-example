@@ -1,7 +1,11 @@
-import AuthLayout from '@/layouts/AuthLayout'
+import LoginForm from './components/LoginForm'
+import LoginHeadings from './components/LoginHeadings'
 
-const Login = () => {
-  return <AuthLayout>sdf</AuthLayout>
-}
+const Login = () => (
+  <>
+    <LoginHeadings />
+    <LoginForm />
+  </>
+)
 
 export default Login
