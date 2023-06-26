@@ -11,4 +11,22 @@ const getProfile = async (username: string, cb?: Callback) => {
   }
 }
 
-export const profileActions = { getProfile }
+const followUser = async (username: string, cb?: Callback) => {
+  const { response, error } = await apiCall({ ...API_URLS.PROFILE.FOLLOW_USER(username) })
+  if (!error && response?.status === 200) {
+    cb?.onSuccess?.(response.data.profile)
+  } else {
+    cb?.onError?.()
+  }
+}
+
+const unfollowUser = async (username: string, cb?: Callback) => {
+  const { response, error } = await apiCall({ ...API_URLS.PROFILE.UNFOLLOW_USER(username) })
+  if (!error && response?.status === 200) {
+    cb?.onSuccess?.(response.data.profile)
+  } else {
+    cb?.onError?.()
+  }
+}
+
+export const profileActions = { getProfile, followUser, unfollowUser }

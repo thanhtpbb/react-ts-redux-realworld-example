@@ -36,6 +36,14 @@ const Profile = () => {
   if (!profile)
     return isFetchingProfile ? <p style={{ display: 'flex', justifyContent: 'center' }}></p> : <PageLoader />
 
+  const handleFollowButtonClick = () => {
+    if (profile.following) {
+      profileActions.unfollowUser(profile.username)
+      return
+    }
+    profileActions.followUser(profile.username)
+  }
+
   return (
     <div className="profile-page">
       <div className="user-info">
@@ -45,7 +53,7 @@ const Profile = () => {
               <img src={profile.image} className="user-img" />
               <h4>{profile.username}</h4>
               <p> {profile.bio}</p>
-              <button className="btn btn-sm btn-outline-secondary action-btn">
+              <button onClick={handleFollowButtonClick} className="btn btn-sm btn-outline-secondary action-btn">
                 {isSelfProfile ? (
                   <>
                     <i className="ion-gear-a"></i>
@@ -54,7 +62,7 @@ const Profile = () => {
                 ) : (
                   <>
                     <i className="ion-plus-round"></i>
-                    &nbsp; Follow {profile.username}
+                    &nbsp; {profile.following ? 'Unfollow' : 'Follow'} {profile.username}
                   </>
                 )}
               </button>
