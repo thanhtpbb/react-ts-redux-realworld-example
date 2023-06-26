@@ -3,6 +3,7 @@ import { ArticleActionType, ArticleThunkAction } from './article.type'
 import { AppDispatch } from '@/redux/store'
 import { apiCall } from '@/configs/api'
 import { API_URLS } from '@/configs/api/endpoint'
+import { CreateArticlePayload } from '@/configs/api/payload'
 
 const getFollowedUsersArticles =
   (cb?: Callback): ArticleThunkAction =>
@@ -42,4 +43,23 @@ const getGlobalArticles =
     }
   }
 
-export const articleActions = { getGlobalArticles, getFollowedUsersArticles }
+const createArticle =
+  (payload: CreateArticlePayload, cb?: Callback): ArticleThunkAction =>
+  async (dispatch: AppDispatch) => {
+    dispatch({ type: ArticleActionType.ARTICLE_ACTION_PENDING })
+
+    const { response, error } = await apiCall({ ...API_URLS.ARTICLES.POST_ARTICLE(), payload })
+
+    if (!error && response?.status === 200) {
+      const result = response.data
+      dispatch({
+        type: ArticleActionType.CREATE_ARTICLE_SUCCESS,
+        payload: result,
+      })
+      cb?.onSuccess?.(result)
+    } else {
+      dispatch({ type: ArticleActionType.ARTICLE_ACTION_PENDING })
+    }
+  }
+
+export const articleActions = { getGlobalArticles, getFollowedUsersArticles, createArticle }

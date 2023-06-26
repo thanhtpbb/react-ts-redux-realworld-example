@@ -19,4 +19,13 @@ export interface EditCurrentUserPayload {
   user: Partial<IUser>
 }
 
-export type ApiEndPointPayload = LoginPayload | RegisterPayload | EditCurrentUserPayload
+export interface CreateArticlePayload {
+  article: {
+    title: string
+    description: string
+    body: string
+    tagList: string[]
+  }
+}
+
+export type ApiEndPointPayload = LoginPayload | RegisterPayload | EditCurrentUserPayload | CreateArticlePayload
