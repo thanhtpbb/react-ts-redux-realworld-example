@@ -1,3 +1,5 @@
+import { IUser } from '@/types/models/IUser'
+
 export interface LoginPayload {
   user: {
     email: string
@@ -13,4 +15,8 @@ export interface RegisterPayload {
   }
 }
 
-export type ApiEndPointPayload = LoginPayload | RegisterPayload
+export interface EditCurrentUserPayload {
+  user: Partial<IUser>
+}
+
+export type ApiEndPointPayload = LoginPayload | RegisterPayload | EditCurrentUserPayload

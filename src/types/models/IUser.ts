@@ -4,4 +4,5 @@ export interface IUser {
   bio: string
   image: string
   token: string
+  password?: string
 }

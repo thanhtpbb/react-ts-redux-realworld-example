@@ -4,7 +4,7 @@ import { createContext, useReducer } from 'react'
 import { apiCall } from '@/configs/api'
 import { Callback } from '@/types/others/callback'
 import { API_URLS } from '@/configs/api/endpoint'
-import { LoginPayload, RegisterPayload } from '@/configs/api/payload'
+import { EditCurrentUserPayload, LoginPayload, RegisterPayload } from '@/configs/api/payload'
 
 const initialState: AuthState = {
   isFetching: false,
@@ -83,7 +83,24 @@ function useAuthReducer(_state = initialState) {
       cb?.onError?.()
     }
   }
-  return { state, login, register, getCurrentUser }
+
+  const editCurrentUser = async (payload: EditCurrentUserPayload, cb?: Callback) => {
+    dispatch({ type: AuthAction.AUTH_ACTION_PENDING })
+
+    const { response, error } = await apiCall({ ...API_URLS.USERS_AND_AUTHENTICATION.EDIT_CURRENT_USER(), payload })
+
+    if (!error && response?.status === 200) {
+      const result = response.data.user
+      console.log(result)
+      dispatch({ type: AuthAction.EDIT_CURRENT_USER_SUCCESS, payload: result })
+      cb?.onSuccess?.(result)
+    } else {
+      dispatch({ type: AuthAction.AUTH_ACTION_FAILURE })
+      cb?.onError?.()
+    }
+  }
+
+  return { state, login, register, getCurrentUser, editCurrentUser }
 }
 
 export const AuthContext = createContext<ReturnType<typeof useAuthReducer>>({
@@ -91,6 +108,7 @@ export const AuthContext = createContext<ReturnType<typeof useAuthReducer>>({
   login: async () => {},
   register: async () => {},
   getCurrentUser: async () => {},
+  editCurrentUser: async () => {},
 })
 
 interface AuthProviderProps {

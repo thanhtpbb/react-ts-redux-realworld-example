@@ -12,6 +12,7 @@ export enum AuthAction {
   REGISTER_SUCCESS = 'REGISTER_SUCCESS',
   LOGIN_SUCCESS = 'LOGIN_SUCCESS',
   GET_CURRENT_USER_SUCCESS = 'GET_CURRENT_USER_SUCCESS',
+  EDIT_CURRENT_USER_SUCCESS = 'EDIT_CURRENT_USER_SUCCESS',
 }
 
 interface AuthActionPending {
@@ -35,9 +36,15 @@ interface GetCurrentUserSuccess {
   payload: IUser
 }
 
+interface EditCurrentUserSuccess {
+  type: AuthAction.EDIT_CURRENT_USER_SUCCESS
+  payload: IUser
+}
+
 export type AuthActionType =
   | AuthActionPending
   | AuthActionFailure
   | LoginSuccess
   | RegisterSuccess
   | GetCurrentUserSuccess
+  | EditCurrentUserSuccess
