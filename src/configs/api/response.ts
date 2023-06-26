@@ -1,10 +1,13 @@
+import { IArticle } from '@/types/models/IArticle'
+import { IProfile } from '@/types/models/IProfile'
 import { IUser } from '@/types/models/IUser'
-import { Profile } from '@/types/others/profile'
 
+// Tags
 export interface GetTagsResponse {
   tags: string[]
 }
 
+// Auth
 export interface LoginResponse {
   user: IUser
 }
@@ -13,4 +16,14 @@ export interface RegisterResponse {
   user: IUser
 }
 
-export type ProfileResponse = Profile
+// Profile
+export type ProfileResponse = IProfile
+
+// Articles
+interface GetArticlesResponse {
+  articles: IArticle[]
+  articlesCount: number
+}
+
+export type GetFollowedUsersArticlesResponse = GetArticlesResponse
+export type GetGlobalArticlesResponse = GetArticlesResponse

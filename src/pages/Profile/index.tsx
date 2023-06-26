@@ -1,12 +1,12 @@
 import { profileActions } from '@/actions/profile'
 import PageLoader from '@/components/PageLoader'
 import { useAuthContext } from '@/hooks/context'
-import { Profile as ProfileType } from '@/types/others/profile'
+import { IProfile } from '@/types/models/IProfile'
 import { useEffect, useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
 const Profile = () => {
-  const [profile, setProfile] = useState<ProfileType>()
+  const [profile, setProfile] = useState<IProfile>()
   const [isFetchingProfile, setIsFetchingProfile] = useState<boolean>(false)
 
   const { username } = useParams()
@@ -19,7 +19,7 @@ const Profile = () => {
     if (!username) return
     setIsFetchingProfile(true)
     profileActions.getProfile(username, {
-      onSuccess: (fetchedProfile: ProfileType) => {
+      onSuccess: (fetchedProfile: IProfile) => {
         setProfile(fetchedProfile)
         document.title = `@${fetchedProfile.username} - Conduit`
         setIsFetchingProfile(false)
