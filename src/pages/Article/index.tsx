@@ -5,7 +5,7 @@ import { IArticle } from '@/types/models/IArticle'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import ArticleCommentsSection from './components/ArticleCommentsSection'
-import ArticleMetaInfomation from './components/ArticleMetaInfomation'
+import ArticleMetaInformation from './components/ArticleMetaInformation'
 import ArticleTagsList from './components/ArticleTagsList'
 import { favoritesAction } from '@/actions/favorites'
 
@@ -67,7 +67,7 @@ const Article = () => {
       <div className="banner">
         <div className="container">
           <h1>{article.title}</h1>
-          <ArticleMetaInfomation
+          <ArticleMetaInformation
             favorited={favorited}
             favoritesCount={favoritesCount}
             article={article}
@@ -89,7 +89,7 @@ const Article = () => {
         </div>
         <hr />
         <div className="article-actions">
-          <ArticleMetaInfomation
+          <ArticleMetaInformation
             favorited={favorited}
             favoritesCount={favoritesCount}
             article={article}
