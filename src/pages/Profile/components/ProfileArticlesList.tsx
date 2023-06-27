@@ -1,25 +1,28 @@
+import ArticlesList from '@/pages/Article/components/ArticlesList'
+import ArticleNavMenuItem from '@/pages/Home/components/ArticleNavMenuItem'
+import { ArticleType } from '@/types/others'
+import { useState } from 'react'
+
 const ProfileArticlesList = () => {
+  const [articlesType, setArticlesType] = useState<ArticleType>(ArticleType.SELF)
+
   return (
-    <div className="article-preview">
-      <div className="article-meta">
-        <a href="">
-          <img src="http://i.imgur.com/Qr71crq.jpg" />
-        </a>
-        <div className="info">
-          <a href="" className="author">
-            Eric Simons
-          </a>
-          <span className="date">January 20th</span>
-        </div>
-        <button className="btn btn-outline-primary btn-sm pull-xs-right">
-          <i className="ion-heart"></i> 29
-        </button>
+    <div className="col-xs-12 col-md-10 offset-md-1">
+      <div className="articles-toggle">
+        <ul className="nav nav-pills outline-active">
+          <ArticleNavMenuItem articlesType={articlesType} setArticlesType={setArticlesType} type={ArticleType.SELF}>
+            My Articles
+          </ArticleNavMenuItem>
+          <ArticleNavMenuItem
+            articlesType={articlesType}
+            setArticlesType={setArticlesType}
+            type={ArticleType.FAVORITED}
+          >
+            Favorited Articles
+          </ArticleNavMenuItem>
+        </ul>
       </div>
-      <a href="" className="preview-link">
-        <h1>How to build webapps that scale</h1>
-        <p>This is the description for the post.</p>
-        <span>Read more...</span>
-      </a>
+      <ArticlesList articlesType={articlesType} />
     </div>
   )
 }

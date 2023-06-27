@@ -9,7 +9,7 @@ interface ArticleNavMenuItemProps {
 }
 
 const ArticleNavMenuItem: React.FC<ArticleNavMenuItemProps> = ({ children, articlesType, setArticlesType, type }) => (
-  <li className="nav-item">
+  <li className="nav-item" style={{ cursor: 'pointer' }}>
     <div onClick={() => setArticlesType(type)} className={`nav-link ${articlesType === type && 'active'}`}>
       {children}
     </div>

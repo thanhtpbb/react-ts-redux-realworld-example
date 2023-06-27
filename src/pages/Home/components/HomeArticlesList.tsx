@@ -1,7 +1,7 @@
 import { ArticleType } from '@/types/others'
 import { useState } from 'react'
 import ArticleNavMenuItem from './ArticleNavMenuItem'
-import ArticlesList from './ArticlesList'
+import ArticlesList from '../../Article/components/ArticlesList'
 
 const HomeArticlesList = () => {
   const [articlesType, setArticlesType] = useState<ArticleType>(ArticleType.FEED)

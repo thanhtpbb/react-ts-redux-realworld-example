@@ -27,6 +27,36 @@ const getGlobalArticles = async (cb?: Callback) => {
   cb?.onFinally?.()
 }
 
+const getFavoritedArticles = async (username: string, cb?: Callback) => {
+  const { response, error } = await apiCall({
+    ...API_URLS.ARTICLES.GET_GLOBAL_ARTICLES(),
+    params: { favorited: username, limit: 5, offset: 0 },
+  })
+
+  if (!error && response?.status === 200) {
+    const result = response.data.articles
+    cb?.onSuccess?.(result)
+  } else {
+    cb?.onError?.()
+  }
+  cb?.onFinally?.()
+}
+
+const getSelfArticles = async (author: string, cb?: Callback) => {
+  const { response, error } = await apiCall({
+    ...API_URLS.ARTICLES.GET_GLOBAL_ARTICLES(),
+    params: { author, limit: 5, offset: 0 },
+  })
+
+  if (!error && response?.status === 200) {
+    const result = response.data.articles
+    cb?.onSuccess?.(result)
+  } else {
+    cb?.onError?.()
+  }
+  cb?.onFinally?.()
+}
+
 const createArticle = async (payload: CreateArticlePayload, cb?: Callback) => {
   const { response, error } = await apiCall({ ...API_URLS.ARTICLES.POST_ARTICLE(), payload })
 
@@ -81,4 +111,6 @@ export const articleActions = {
   updateArticle,
   createArticle,
   getArticle,
+  getFavoritedArticles,
+  getSelfArticles,
 }
