@@ -1,40 +1,17 @@
 import { apiCall } from '@/configs/api'
 import { API_URLS } from '@/configs/api/endpoint'
 import { CreateArticlePayload, UpdateArticlePayload } from '@/configs/api/payload'
+import { LIST_LIMIT, LIST_PROFILE_LIMIT } from '@/configs/constant'
 import { Callback } from '@/types/others/callback'
 
-const getFollowedUsersArticles = async (cb?: Callback) => {
-  const { response, error } = await apiCall(API_URLS.ARTICLES.GET_FEED_ARTICLES())
-
-  if (!error && response?.status === 200) {
-    const result = response.data.articles
-    cb?.onSuccess?.(result)
-  } else {
-    cb?.onError?.()
-  }
-  cb?.onFinally?.()
-}
-
-const getGlobalArticles = async (cb?: Callback) => {
-  const { response, error } = await apiCall(API_URLS.ARTICLES.GET_GLOBAL_ARTICLES())
-
-  if (!error && response?.status === 200) {
-    const result = response.data.articles
-    cb?.onSuccess?.(result)
-  } else {
-    cb?.onError?.()
-  }
-  cb?.onFinally?.()
-}
-
-const getFavoritedArticles = async (username: string, cb?: Callback) => {
+const getFollowedUsersArticles = async (offset: number, cb?: Callback) => {
   const { response, error } = await apiCall({
-    ...API_URLS.ARTICLES.GET_GLOBAL_ARTICLES(),
-    params: { favorited: username, limit: 5, offset: 0 },
+    ...API_URLS.ARTICLES.GET_FEED_ARTICLES(),
+    params: { offset, limit: LIST_LIMIT },
   })
 
   if (!error && response?.status === 200) {
-    const result = response.data.articles
+    const result = response.data
     cb?.onSuccess?.(result)
   } else {
     cb?.onError?.()
@@ -42,14 +19,41 @@ const getFavoritedArticles = async (username: string, cb?: Callback) => {
   cb?.onFinally?.()
 }
 
-const getSelfArticles = async (author: string, cb?: Callback) => {
+const getGlobalArticles = async (offset: number, cb?: Callback) => {
+  const { response, error } = await apiCall({ ...API_URLS.ARTICLES.GET_GLOBAL_ARTICLES(), params: { offset } })
+
+  if (!error && response?.status === 200) {
+    const result = response.data
+    cb?.onSuccess?.(result)
+  } else {
+    cb?.onError?.()
+  }
+  cb?.onFinally?.()
+}
+
+const getFavoritedArticles = async (username: string, offset: number, cb?: Callback) => {
   const { response, error } = await apiCall({
     ...API_URLS.ARTICLES.GET_GLOBAL_ARTICLES(),
-    params: { author, limit: 5, offset: 0 },
+    params: { favorited: username, limit: LIST_PROFILE_LIMIT, offset: offset },
   })
 
   if (!error && response?.status === 200) {
-    const result = response.data.articles
+    const result = response.data
+    cb?.onSuccess?.(result)
+  } else {
+    cb?.onError?.()
+  }
+  cb?.onFinally?.()
+}
+
+const getSelfArticles = async (author: string, offset: number, cb?: Callback) => {
+  const { response, error } = await apiCall({
+    ...API_URLS.ARTICLES.GET_GLOBAL_ARTICLES(),
+    params: { author, limit: LIST_PROFILE_LIMIT, offset },
+  })
+
+  if (!error && response?.status === 200) {
+    const result = response.data
     cb?.onSuccess?.(result)
   } else {
     cb?.onError?.()

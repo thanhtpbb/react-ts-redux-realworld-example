@@ -1,10 +1,12 @@
 import { articleActions } from '@/actions/article'
 import PageLoader from '@/components/PageLoader'
+import { GetArticlesResponse } from '@/configs/api/response'
+import { LIST_LIMIT } from '@/configs/constant'
 import { IArticle } from '@/types/models/IArticle'
 import { ArticleType } from '@/types/others'
 import { useEffect, useState } from 'react'
-import ArticlePreviewItem from '../../../components/ArticlePreviewItem'
 import { useParams } from 'react-router-dom'
+import ArticlePreviewItem from '../../../components/ArticlePreviewItem'
 
 interface ArticlesListProps {
   articlesType: ArticleType
@@ -16,24 +18,32 @@ const ArticlesList: React.FC<ArticlesListProps> = ({ articlesType }) => {
   const [articles, setArticles] = useState<IArticle[]>([])
   const [isFetchingArticles, setIsFetchingArticles] = useState<boolean>(false)
 
+  const [totalPages, setTotalPages] = useState<number>(1)
+  const [currentPage, setCurrentPage] = useState<number>(1)
+
   const fetchArticlesList = () => {
-    const onSuccess = (articles: IArticle[]) => setArticles(articles)
+    const offset = (currentPage - 1) * 10
+
+    const onSuccess = (response: GetArticlesResponse) => {
+      setArticles(response.articles)
+      setTotalPages(Math.floor(response.articlesCount / LIST_LIMIT) + 1)
+    }
     const onFinally = () => setIsFetchingArticles(false)
 
     switch (articlesType) {
       case ArticleType.GLOBAL:
-        articleActions.getGlobalArticles({ onSuccess, onFinally })
+        articleActions.getGlobalArticles(offset, { onSuccess, onFinally })
         break
       case ArticleType.FEED:
-        articleActions.getFollowedUsersArticles({ onSuccess, onFinally })
+        articleActions.getFollowedUsersArticles(offset, { onSuccess, onFinally })
         break
       case ArticleType.FAVORITED:
         if (!username) break
-        articleActions.getFavoritedArticles(username, { onSuccess, onFinally })
+        articleActions.getFavoritedArticles(username, offset, { onSuccess, onFinally })
         break
       case ArticleType.SELF:
         if (!username) break
-        articleActions.getSelfArticles(username, { onSuccess, onFinally })
+        articleActions.getSelfArticles(username, offset, { onSuccess, onFinally })
         break
       default:
         setIsFetchingArticles(false)
@@ -43,7 +53,11 @@ const ArticlesList: React.FC<ArticlesListProps> = ({ articlesType }) => {
   useEffect(() => {
     setIsFetchingArticles(true)
     fetchArticlesList()
-  }, [articlesType])
+  }, [articlesType, currentPage])
+
+  const handlePaginationPageClick = (page: number) => {
+    setCurrentPage(page)
+  }
 
   if (isFetchingArticles) {
     return (
@@ -64,16 +78,17 @@ const ArticlesList: React.FC<ArticlesListProps> = ({ articlesType }) => {
       ))}
       <nav>
         <ul className="pagination">
-          <li className="page-item ng-scope active">
-            <a className="page-link ng-binding" href="">
-              1
-            </a>
-          </li>
-          <li className="page-item ng-scope">
-            <a className="page-link ng-binding" href="">
-              2
-            </a>
-          </li>
+          {Array.from({ length: totalPages }, (_, idx) => (
+            <li
+              onClick={() => handlePaginationPageClick(idx + 1)}
+              className={`page-item ng-scope ${currentPage === idx + 1 && 'active'}`}
+              key={`page-${idx + 1}`}
+            >
+              <div style={{ cursor: 'pointer' }} className="page-link ng-binding">
+                {idx + 1}
+              </div>
+            </li>
+          ))}
         </ul>
       </nav>
     </>

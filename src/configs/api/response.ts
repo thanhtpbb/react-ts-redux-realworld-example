@@ -20,10 +20,7 @@ export interface RegisterResponse {
 export type ProfileResponse = IProfile
 
 // Articles
-interface GetArticlesResponse {
+export interface GetArticlesResponse {
   articles: IArticle[]
   articlesCount: number
 }
-
-export type GetFollowedUsersArticlesResponse = GetArticlesResponse
-export type GetGlobalArticlesResponse = GetArticlesResponse
