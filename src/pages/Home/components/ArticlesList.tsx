@@ -1,9 +1,9 @@
+import { articleActions } from '@/actions/article'
+import PageLoader from '@/components/PageLoader'
 import { IArticle } from '@/types/models/IArticle'
 import { ArticleType } from '@/types/others'
 import { useEffect, useState } from 'react'
-import ArticleItem from './ArticleItem'
-import { articleActions } from '@/actions/article'
-import PageLoader from '@/components/PageLoader'
+import ArticlePreviewItem from '../../../components/ArticlePreviewItem'
 
 interface ArticlesListProps {
   articlesType: ArticleType
@@ -41,7 +41,7 @@ const ArticlesList: React.FC<ArticlesListProps> = ({ articlesType }) => {
   return (
     <>
       {articles.map((article, idx) => (
-        <ArticleItem key={`global-article-${idx}`} article={article} />
+        <ArticlePreviewItem key={`global-article-${idx}`} article={article} />
       ))}
     </>
   )

@@ -1,13 +1,17 @@
 import { favoritesAction } from '@/actions/favorites'
 import React, { useState } from 'react'
 
-interface HomeFavoriteButtonProps {
+interface ArticlePreviewFavoriteButtonProps {
   originalFavoritesCount: number
   originalFavorited: boolean
   slug: string
 }
 
-const HomeFavoriteButton: React.FC<HomeFavoriteButtonProps> = ({ slug, originalFavoritesCount, originalFavorited }) => {
+const ArticlePreviewFavoriteButton: React.FC<ArticlePreviewFavoriteButtonProps> = ({
+  slug,
+  originalFavoritesCount,
+  originalFavorited,
+}) => {
   const [favoritesCount, setFavoritesCount] = useState<number>(originalFavoritesCount)
   const [favorited, setFavorited] = useState<boolean>(originalFavorited)
 
@@ -39,4 +43,4 @@ const HomeFavoriteButton: React.FC<HomeFavoriteButtonProps> = ({ slug, originalF
   )
 }
 
-export default HomeFavoriteButton
+export default ArticlePreviewFavoriteButton

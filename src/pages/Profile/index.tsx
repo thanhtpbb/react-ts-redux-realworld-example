@@ -36,12 +36,13 @@ const Profile = () => {
 
   const isSelfProfile = useMemo(() => profile?.username === currentUser?.username, [profile, currentUser])
 
-  if (!profile)
-    return isFetchingProfile ? (
-      <p style={{ display: 'flex', justifyContent: 'center' }}>Profile not found</p>
-    ) : (
-      <PageLoader />
-    )
+  if (!profile) {
+    return null
+  }
+
+  if (isFetchingProfile) {
+    return <PageLoader />
+  }
 
   return (
     <div className="profile-page">

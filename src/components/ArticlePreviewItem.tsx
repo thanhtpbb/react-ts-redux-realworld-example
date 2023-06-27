@@ -1,14 +1,15 @@
+import ArticlePreviewFavoriteButton from '@/components/ArticlePreviewFavoriteButton'
 import { ROUTER } from '@/configs/router'
 import { IArticle } from '@/types/models/IArticle'
 import { formatDate } from '@/utils/helper'
 import React from 'react'
-import HomeFavoriteButton from './HomeFavoriteButton'
+import ArticlePreviewTagsList from './ArticlePreviewTagsList'
 
-interface ArticleItemProps {
+interface ArticlePreviewItemProps {
   article: IArticle
 }
 
-const ArticleItem: React.FC<ArticleItemProps> = ({ article }) => {
+const ArticlePreviewItem: React.FC<ArticlePreviewItemProps> = ({ article }) => {
   const profilePageUrl = `${ROUTER.PROFILE_BASE}/${article.author.username}`
 
   return (
@@ -23,7 +24,7 @@ const ArticleItem: React.FC<ArticleItemProps> = ({ article }) => {
           </a>
           <span className="date">{formatDate(article.createdAt)}</span>
         </div>
-        <HomeFavoriteButton
+        <ArticlePreviewFavoriteButton
           slug={article.slug}
           originalFavorited={article.favorited}
           originalFavoritesCount={article.favoritesCount}
@@ -34,8 +35,9 @@ const ArticleItem: React.FC<ArticleItemProps> = ({ article }) => {
         <p>{article.description}</p>
         <span>Read more...</span>
       </a>
+      <ArticlePreviewTagsList article={article} />
     </div>
   )
 }
 
-export default ArticleItem
+export default ArticlePreviewItem
