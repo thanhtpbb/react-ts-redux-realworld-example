@@ -1,13 +1,12 @@
+import { articleActions } from '@/actions/article'
+import { favoritesAction } from '@/actions/favorites'
 import PageLoader from '@/components/PageLoader'
-import { useAppDispatch } from '@/hooks/redux'
-import { articleActions } from '@/redux/reducers/article/article.action'
 import { IArticle } from '@/types/models/IArticle'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import ArticleCommentsSection from './components/ArticleCommentsSection'
 import ArticleMetaInformation from './components/ArticleMetaInformation'
 import ArticleTagsList from './components/ArticleTagsList'
-import { favoritesAction } from '@/actions/favorites'
 
 const Article = () => {
   const [article, setArticle] = useState<IArticle>()
@@ -18,23 +17,19 @@ const Article = () => {
   const [favorited, setFavorited] = useState<boolean>(false)
 
   const { slug } = useParams()
-  const dispatch = useAppDispatch()
 
   const fetchArticleItem = () => {
     setIsFetchingArticle(true)
     if (!slug) return
-    dispatch(
-      articleActions.getArticle(slug, {
-        onSuccess: (result: IArticle) => {
-          setArticle(result)
-          setFavoritesCount(result.favoritesCount)
-          setFavorited(result.favorited)
-          document.title = `${result.title} - Conduit`
-          setIsFetchingArticle(false)
-        },
-        onError: () => setIsFetchingArticle(false),
-      })
-    )
+    articleActions.getArticle(slug, {
+      onSuccess: (result: IArticle) => {
+        setArticle(result)
+        setFavoritesCount(result.favoritesCount)
+        setFavorited(result.favorited)
+        document.title = `${result.title} - Conduit`
+      },
+      onFinally: () => setIsFetchingArticle(false),
+    })
   }
 
   useEffect(() => {

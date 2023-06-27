@@ -1,18 +1,28 @@
-import { useAppDispatch, useAppSelector } from '@/hooks/redux'
-import { tagActions } from '@/redux/reducers/tag/tag.action'
-import { useEffect } from 'react'
+import { tagActions } from '@/actions/tag'
+import PageLoader from '@/components/PageLoader'
+import { useEffect, useState } from 'react'
 
 const TagList = () => {
-  const dispatch = useAppDispatch()
-  const { isFetching: isFetchingTags, tags } = useAppSelector(state => state.tag)
+  const [tags, setTags] = useState<string[]>([])
+  const [isFetchingTags, setIsFetchingTags] = useState<boolean>(false)
 
   useEffect(() => {
-    dispatch(tagActions.getAllTags())
+    setIsFetchingTags(true)
+    tagActions.getAllTags({
+      onSuccess: setTags,
+      onFinally: () => setIsFetchingTags(false),
+    })
   }, [])
 
-  return isFetchingTags ? (
-    <p>Loading tags...</p>
-  ) : (
+  if (isFetchingTags) {
+    return <PageLoader />
+  }
+
+  if (tags.length === 0) {
+    return <p>No tags found!</p>
+  }
+
+  return (
     <div className="tag-list">
       {tags.map((tag, idx) => (
         <a href="" key={`tag-list-${idx}`} className="tag-pill tag-default">

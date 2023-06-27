@@ -10,6 +10,7 @@ const EditorForm = () => {
   const navigate = useNavigate()
 
   const [currentArticle, setCurrentArticle] = useState<IArticle>()
+  const [isLoadingEdit, setIsLoadingEdit] = useState<boolean>(false)
 
   const titleRef = useRef<HTMLInputElement>(null)
   const descriptionRef = useRef<HTMLInputElement>(null)
@@ -22,17 +23,25 @@ const EditorForm = () => {
 
   const createNewArticle = (title: string, description: string, body: string, tagList: string[]) => {
     const article = { body, description, title, tagList }
-    articleActions.createArticle({ article }, { onSuccess: navigateToArticleDetail })
+    articleActions.createArticle(
+      { article },
+      { onSuccess: navigateToArticleDetail, onFinally: () => setIsLoadingEdit(false) }
+    )
   }
 
   const updateArticle = (title: string, description: string, body: string) => {
     if (!slug) return
     const article = { body, description, title }
-    articleActions.updateArticle(slug, { article }, { onSuccess: navigateToArticleDetail })
+    articleActions.updateArticle(
+      slug,
+      { article },
+      { onSuccess: navigateToArticleDetail, onFinally: () => setIsLoadingEdit(false) }
+    )
   }
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setIsLoadingEdit(true)
 
     const title = titleRef.current?.value || ''
     const description = descriptionRef.current?.value || ''
@@ -61,6 +70,7 @@ const EditorForm = () => {
       <fieldset>
         <fieldset className="form-group">
           <input
+            disabled={isLoadingEdit}
             ref={titleRef}
             defaultValue={title}
             type="text"
@@ -70,6 +80,7 @@ const EditorForm = () => {
         </fieldset>
         <fieldset className="form-group">
           <input
+            disabled={isLoadingEdit}
             defaultValue={description}
             ref={descriptionRef}
             type="text"
@@ -79,6 +90,7 @@ const EditorForm = () => {
         </fieldset>
         <fieldset className="form-group">
           <textarea
+            disabled={isLoadingEdit}
             defaultValue={body}
             ref={bodyRef}
             className="form-control"
@@ -88,6 +100,7 @@ const EditorForm = () => {
         </fieldset>
         <fieldset className="form-group">
           <input
+            disabled={isLoadingEdit}
             defaultValue={tagList?.join(', ')}
             ref={tagsRef}
             type="text"
@@ -96,7 +109,7 @@ const EditorForm = () => {
           />
           <div className="tag-list"></div>
         </fieldset>
-        <button className="btn btn-lg pull-xs-right btn-primary" type="submit">
+        <button disabled={isLoadingEdit} className="btn btn-lg pull-xs-right btn-primary" type="submit">
           Publish Article
         </button>
       </fieldset>

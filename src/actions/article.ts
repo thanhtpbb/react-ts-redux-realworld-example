@@ -3,6 +3,30 @@ import { API_URLS } from '@/configs/api/endpoint'
 import { CreateArticlePayload, UpdateArticlePayload } from '@/configs/api/payload'
 import { Callback } from '@/types/others/callback'
 
+const getFollowedUsersArticles = async (cb?: Callback) => {
+  const { response, error } = await apiCall(API_URLS.ARTICLES.GET_FEED_ARTICLES())
+
+  if (!error && response?.status === 200) {
+    const result = response.data.articles
+    cb?.onSuccess?.(result)
+  } else {
+    cb?.onError?.()
+  }
+  cb?.onFinally?.()
+}
+
+const getGlobalArticles = async (cb?: Callback) => {
+  const { response, error } = await apiCall(API_URLS.ARTICLES.GET_GLOBAL_ARTICLES())
+
+  if (!error && response?.status === 200) {
+    const result = response.data.articles
+    cb?.onSuccess?.(result)
+  } else {
+    cb?.onError?.()
+  }
+  cb?.onFinally?.()
+}
+
 const createArticle = async (payload: CreateArticlePayload, cb?: Callback) => {
   const { response, error } = await apiCall({ ...API_URLS.ARTICLES.POST_ARTICLE(), payload })
 
@@ -12,6 +36,7 @@ const createArticle = async (payload: CreateArticlePayload, cb?: Callback) => {
   } else {
     cb?.onError?.()
   }
+  cb?.onFinally?.()
 }
 
 const updateArticle = async (slug: string, payload: UpdateArticlePayload, cb?: Callback) => {
@@ -34,6 +59,7 @@ const deleteArticle = async (slug: string, cb?: Callback) => {
   } else {
     cb?.onError?.()
   }
+  cb?.onFinally?.()
 }
 
 const getArticle = async (slug: string, cb?: Callback) => {
@@ -45,6 +71,14 @@ const getArticle = async (slug: string, cb?: Callback) => {
   } else {
     cb?.onError?.()
   }
+  cb?.onFinally?.()
 }
 
-export const articleActions = { deleteArticle, updateArticle, createArticle, getArticle }
+export const articleActions = {
+  getFollowedUsersArticles,
+  getGlobalArticles,
+  deleteArticle,
+  updateArticle,
+  createArticle,
+  getArticle,
+}
