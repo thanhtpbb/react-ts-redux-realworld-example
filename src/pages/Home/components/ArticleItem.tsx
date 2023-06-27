@@ -2,6 +2,7 @@ import { ROUTER } from '@/configs/router'
 import { IArticle } from '@/types/models/IArticle'
 import { formatDate } from '@/utils/helper'
 import React from 'react'
+import HomeFavoriteButton from './HomeFavoriteButton'
 
 interface ArticleItemProps {
   article: IArticle
@@ -22,11 +23,13 @@ const ArticleItem: React.FC<ArticleItemProps> = ({ article }) => {
           </a>
           <span className="date">{formatDate(article.createdAt)}</span>
         </div>
-        <button className="btn btn-outline-primary btn-sm pull-xs-right">
-          <i className="ion-heart"></i> {article.favoritesCount}
-        </button>
+        <HomeFavoriteButton
+          slug={article.slug}
+          originalFavorited={article.favorited}
+          originalFavoritesCount={article.favoritesCount}
+        />
       </div>
-      <a href="" className="preview-link">
+      <a href={`${ROUTER.ARTICLE_BASE}/${article.slug}`} className="preview-link">
         <h1>{article.title}</h1>
         <p>{article.description}</p>
         <span>Read more...</span>

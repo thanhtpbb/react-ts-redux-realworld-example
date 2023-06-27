@@ -4,7 +4,7 @@ import GlobalArticlesList from './components/GlobalArticlesList'
 
 const Home = () => {
   useEffect(() => {
-    document.title = 'Home — Conduct'
+    document.title = 'Home — Conduit'
   }, [])
 
   return (
@@ -22,7 +22,7 @@ const Home = () => {
             <div className="feed-toggle">
               <ul className="nav nav-pills outline-active">
                 <li className="nav-item">
-                  <a className="nav-link disabled" href="">
+                  <a className="nav-link" href="">
                     Your Feed
                   </a>
                 </li>
