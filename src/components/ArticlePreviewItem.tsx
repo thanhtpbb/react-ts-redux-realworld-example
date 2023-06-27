@@ -4,6 +4,7 @@ import { IArticle } from '@/types/models/IArticle'
 import { formatDate } from '@/utils/helper'
 import React from 'react'
 import ArticlePreviewTagsList from './ArticlePreviewTagsList'
+import { Link } from 'react-router-dom'
 
 interface ArticlePreviewItemProps {
   article: IArticle
@@ -15,13 +16,13 @@ const ArticlePreviewItem: React.FC<ArticlePreviewItemProps> = ({ article }) => {
   return (
     <div className="article-preview">
       <div className="article-meta">
-        <a href={profilePageUrl}>
+        <Link to={profilePageUrl}>
           <img src={article.author.image} />
-        </a>
+        </Link>
         <div className="info">
-          <a href={profilePageUrl} className="author">
+          <Link to={profilePageUrl} className="author">
             {article.author.username}
-          </a>
+          </Link>
           <span className="date">{formatDate(article.createdAt)}</span>
         </div>
         <ArticlePreviewFavoriteButton
@@ -30,11 +31,11 @@ const ArticlePreviewItem: React.FC<ArticlePreviewItemProps> = ({ article }) => {
           originalFavoritesCount={article.favoritesCount}
         />
       </div>
-      <a href={`${ROUTER.ARTICLE_BASE}/${article.slug}`} className="preview-link">
+      <Link to={`${ROUTER.ARTICLE_BASE}/${article.slug}`} className="preview-link">
         <h1>{article.title}</h1>
         <p>{article.description}</p>
         <span>Read more...</span>
-      </a>
+      </Link>
       <ArticlePreviewTagsList article={article} />
     </div>
   )

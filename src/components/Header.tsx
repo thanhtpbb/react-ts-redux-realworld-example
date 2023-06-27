@@ -2,7 +2,7 @@ import { ROUTER } from '@/configs/router'
 import { useAuthContext } from '@/hooks/context'
 import { isLoggedin } from '@/utils/storage'
 import { memo } from 'react'
-import { useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 const Header = () => {
   const {
@@ -15,45 +15,45 @@ const Header = () => {
   return (
     <nav className="navbar navbar-light">
       <div className="container">
-        <a className="navbar-brand" href={ROUTER.HOME}>
+        <Link className="navbar-brand" to={ROUTER.HOME}>
           conduit
-        </a>
+        </Link>
         <ul className="nav navbar-nav pull-xs-right">
           <li className="nav-item">
-            <a className={`nav-link ${pathname === ROUTER.HOME && 'active'}`} href={ROUTER.HOME}>
+            <Link to={ROUTER.HOME} className={`nav-link ${pathname === ROUTER.HOME && 'active'}`}>
               Home
-            </a>
+            </Link>
           </li>
           {isLoggedin ? (
             <>
               <li className="nav-item">
-                <a className={`nav-link ${pathname === ROUTER.EDITOR && 'active'}`} href={ROUTER.EDITOR}>
+                <Link to={ROUTER.EDITOR} className={`nav-link ${pathname === ROUTER.EDITOR && 'active'}`}>
                   <i className="ion-compose"></i>&nbsp;New Article
-                </a>
+                </Link>
               </li>
               <li className="nav-item">
-                <a className={`nav-link ${pathname === ROUTER.SETTINGS && 'active'}`} href={ROUTER.SETTINGS}>
+                <Link to={ROUTER.SETTINGS} className={`nav-link ${pathname === ROUTER.SETTINGS && 'active'}`}>
                   <i className="ion-gear-a"></i>&nbsp;Settings
-                </a>
+                </Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href={`${ROUTER.PROFILE_BASE}/${currentUser?.username}`}>
+                <Link to={`${ROUTER.PROFILE_BASE}/${currentUser?.username}`} className="nav-link">
                   <img src={currentUser?.image} style={{ width: '26px', height: '26px', marginRight: '5px' }} />
                   {currentUser?.username}
-                </a>
+                </Link>
               </li>
             </>
           ) : (
             <>
               <li className="nav-item">
-                <a className="nav-link" href={ROUTER.LOGIN}>
+                <Link className="nav-link" to={ROUTER.LOGIN}>
                   Sign in
-                </a>
+                </Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href={ROUTER.REGISTER}>
+                <Link className="nav-link" to={ROUTER.REGISTER}>
                   Sign up
-                </a>
+                </Link>
               </li>
             </>
           )}

@@ -25,9 +25,9 @@ const TagList = () => {
   return (
     <div className="tag-list">
       {tags.map((tag, idx) => (
-        <a href="" key={`tag-list-${idx}`} className="tag-pill tag-default">
+        <div key={`tag-list-${idx}`} className="tag-pill tag-default">
           {tag}
-        </a>
+        </div>
       ))}
     </div>
   )

@@ -6,6 +6,7 @@ import React, { useMemo } from 'react'
 import ArticleFavoriteButton from './ArticleFavoriteButton'
 import ArticleFollowButton from './ArticleFollowButton'
 import SelfArticleFunctions from './SelfArticleFunctions'
+import { Link } from 'react-router-dom'
 
 interface ArticleMetaInformationProps {
   article: IArticle
@@ -32,13 +33,13 @@ const ArticleMetaInformation: React.FC<ArticleMetaInformationProps> = ({
 
   return (
     <div className="article-meta">
-      <a href={authorURL}>
+      <Link to={authorURL}>
         <img src={article.author.image} />
-      </a>
+      </Link>
       <div className="info">
-        <a href={authorURL} className="author">
+        <Link to={authorURL} className="author">
           {article.author.username}
-        </a>
+        </Link>
         <span className="date">{formatDate(article.createdAt)}</span>
       </div>
       {isSelfArticle ? (
