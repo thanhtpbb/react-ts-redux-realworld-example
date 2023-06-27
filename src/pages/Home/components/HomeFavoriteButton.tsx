@@ -12,7 +12,6 @@ const HomeFavoriteButton: React.FC<HomeFavoriteButtonProps> = ({ slug, originalF
   const [favorited, setFavorited] = useState<boolean>(originalFavorited)
 
   const handleFavoriteButtonClick = () => {
-    console.log(originalFavorited)
     if (favorited) {
       favoritesAction.favoriteArticle(slug, {
         onSuccess: () => {

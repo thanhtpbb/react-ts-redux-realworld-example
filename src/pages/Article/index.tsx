@@ -7,10 +7,16 @@ import { useParams } from 'react-router-dom'
 import ArticleCommentsSection from './components/ArticleCommentsSection'
 import ArticleMetaInfomation from './components/ArticleMetaInfomation'
 import ArticleTagsList from './components/ArticleTagsList'
+import { favoritesAction } from '@/actions/favorites'
 
 const Article = () => {
   const [article, setArticle] = useState<IArticle>()
   const [isFetchingArticle, setIsFetchingArticle] = useState<boolean>(false)
+
+  // Handling favorited state
+  const [favoritesCount, setFavoritesCount] = useState<number>(0)
+  const [favorited, setFavorited] = useState<boolean>(false)
+
   const { slug } = useParams()
   const dispatch = useAppDispatch()
 
@@ -21,6 +27,8 @@ const Article = () => {
       articleActions.getArticle(slug, {
         onSuccess: (result: IArticle) => {
           setArticle(result)
+          setFavoritesCount(result.favoritesCount)
+          setFavorited(result.favorited)
           document.title = `${result.title} - Conduit`
           setIsFetchingArticle(false)
         },
@@ -35,13 +43,36 @@ const Article = () => {
 
   if (!article) return isFetchingArticle ? <PageLoader /> : <div>Article not found</div>
 
+  const handleFavoriteButtonClick = () => {
+    if (favorited) {
+      favoritesAction.favoriteArticle(article.slug, {
+        onSuccess: () => {
+          setFavorited(prev => !prev)
+          setFavoritesCount(prev => prev - 1)
+        },
+      })
+      return
+    }
+    favoritesAction.unfavoriteArticle(article.slug, {
+      onSuccess: () => {
+        setFavorited(prev => !prev)
+        setFavoritesCount(prev => prev + 1)
+      },
+    })
+  }
+
   return (
     <div className="article-page">
       {/* Banner */}
       <div className="banner">
         <div className="container">
           <h1>{article.title}</h1>
-          <ArticleMetaInfomation article={article} />
+          <ArticleMetaInfomation
+            favorited={favorited}
+            favoritesCount={favoritesCount}
+            article={article}
+            handleFavoriteButtonClick={handleFavoriteButtonClick}
+          />
         </div>
       </div>
       {/* Content */}
@@ -58,7 +89,12 @@ const Article = () => {
         </div>
         <hr />
         <div className="article-actions">
-          <ArticleMetaInfomation article={article} />
+          <ArticleMetaInfomation
+            favorited={favorited}
+            favoritesCount={favoritesCount}
+            article={article}
+            handleFavoriteButtonClick={handleFavoriteButtonClick}
+          />
         </div>
         <ArticleCommentsSection slug={article.slug} />
       </div>

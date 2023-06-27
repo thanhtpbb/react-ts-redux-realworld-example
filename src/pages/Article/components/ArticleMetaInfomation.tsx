@@ -2,12 +2,21 @@ import { ROUTER } from '@/configs/router'
 import { IArticle } from '@/types/models/IArticle'
 import { formatDate } from '@/utils/helper'
 import React, { useMemo } from 'react'
+import ArticleFavoriteButton from './ArticleFavoriteButton'
 
 interface ArticleMetaInfomationProps {
   article: IArticle
+  favorited: boolean
+  favoritesCount: number
+  handleFavoriteButtonClick: () => void
 }
 
-const ArticleMetaInfomation: React.FC<ArticleMetaInfomationProps> = ({ article }) => {
+const ArticleMetaInfomation: React.FC<ArticleMetaInfomationProps> = ({
+  article,
+  handleFavoriteButtonClick,
+  favorited,
+  favoritesCount,
+}) => {
   const authorURL = useMemo(() => `${ROUTER.PROFILE_BASE}/${article?.author.username}`, [article])
 
   return (
@@ -26,10 +35,11 @@ const ArticleMetaInfomation: React.FC<ArticleMetaInfomationProps> = ({ article }
         &nbsp; Follow {article.author.username}
       </button>
       &nbsp;&nbsp;
-      <button className="btn btn-sm btn-outline-primary">
-        <i className="ion-heart"></i>
-        &nbsp; Favorite Article <span className="counter">{article.favoritesCount}</span>
-      </button>
+      <ArticleFavoriteButton
+        handleFavoriteButtonClick={handleFavoriteButtonClick}
+        favorited={favorited}
+        favoritesCount={favoritesCount}
+      />
     </div>
   )
 }
