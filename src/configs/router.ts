@@ -5,6 +5,7 @@ export const ROUTER = {
   SETTINGS: '/settings',
   EDITOR: '/editor',
   EDITOR_EDIT: '/editor/:slug',
+  ARTICLE_BASE: '/article',
   ARTICLE: '/article/:slug',
   PROFILE_BASE: 'profile',
   PROFILE: '/profile/:username',

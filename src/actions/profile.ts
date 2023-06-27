@@ -9,6 +9,7 @@ const getProfile = async (username: string, cb?: Callback) => {
   } else {
     cb?.onError?.()
   }
+  cb?.onFinally?.()
 }
 
 const followUser = async (username: string, cb?: Callback) => {

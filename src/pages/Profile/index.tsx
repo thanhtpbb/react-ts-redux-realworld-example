@@ -22,8 +22,8 @@ const Profile = () => {
       onSuccess: (fetchedProfile: IProfile) => {
         setProfile(fetchedProfile)
         document.title = `@${fetchedProfile.username} - Conduit`
-        setIsFetchingProfile(false)
       },
+      onFinally: () => setIsFetchingProfile(false),
     })
   }
 
@@ -34,7 +34,11 @@ const Profile = () => {
   const isSelfProfile = useMemo(() => profile?.username === currentUser?.username, [profile, currentUser])
 
   if (!profile)
-    return isFetchingProfile ? <p style={{ display: 'flex', justifyContent: 'center' }}></p> : <PageLoader />
+    return isFetchingProfile ? (
+      <p style={{ display: 'flex', justifyContent: 'center' }}>Profile not found</p>
+    ) : (
+      <PageLoader />
+    )
 
   const handleFollowButtonClick = () => {
     if (profile.following) {

@@ -1,3 +1,4 @@
+import { IComment } from '@/types/models/IComment'
 import { IUser } from '@/types/models/IUser'
 
 export interface LoginPayload {
@@ -28,4 +29,14 @@ export interface CreateArticlePayload {
   }
 }
 
-export type ApiEndPointPayload = LoginPayload | RegisterPayload | EditCurrentUserPayload | CreateArticlePayload
+export interface CreateCommentPayload {
+  comment: IComment
+}
+
+export type ApiEndPointPayload =
+  | string
+  | LoginPayload
+  | RegisterPayload
+  | EditCurrentUserPayload
+  | CreateArticlePayload
+  | CreateCommentPayload

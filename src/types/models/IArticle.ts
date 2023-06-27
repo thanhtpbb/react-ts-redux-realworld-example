@@ -10,4 +10,5 @@ export interface IArticle {
   favorited: boolean
   favoritesCount: number
   author: IProfile
+  body: string
 }

@@ -1,116 +1,66 @@
+import PageLoader from '@/components/PageLoader'
+import { useAppDispatch } from '@/hooks/redux'
+import { articleActions } from '@/redux/reducers/article/article.action'
+import { IArticle } from '@/types/models/IArticle'
+import { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
+import ArticleCommentsSection from './components/ArticleCommentsSection'
+import ArticleMetaInfomation from './components/ArticleMetaInfomation'
+import ArticleTagsList from './components/ArticleTagsList'
+
 const Article = () => {
+  const [article, setArticle] = useState<IArticle>()
+  const [isFetchingArticle, setIsFetchingArticle] = useState<boolean>(false)
+  const { slug } = useParams()
+  const dispatch = useAppDispatch()
+
+  const fetchArticleItem = () => {
+    setIsFetchingArticle(true)
+    if (!slug) return
+    dispatch(
+      articleActions.getArticle(slug, {
+        onSuccess: (result: IArticle) => {
+          setArticle(result)
+          document.title = `${result.title} - Conduit`
+          setIsFetchingArticle(false)
+        },
+        onError: () => setIsFetchingArticle(false),
+      })
+    )
+  }
+
+  useEffect(() => {
+    fetchArticleItem()
+  }, [])
+
+  if (!article) return isFetchingArticle ? <PageLoader /> : <div>Article not found</div>
+
   return (
     <div className="article-page">
+      {/* Banner */}
       <div className="banner">
         <div className="container">
-          <h1>How to build webapps that scale</h1>
-
-          <div className="article-meta">
-            <a href="">
-              <img src="http://i.imgur.com/Qr71crq.jpg" />
-            </a>
-            <div className="info">
-              <a href="" className="author">
-                Eric Simons
-              </a>
-              <span className="date">January 20th</span>
-            </div>
-            <button className="btn btn-sm btn-outline-secondary">
-              <i className="ion-plus-round"></i>
-              &nbsp; Follow Eric Simons <span className="counter">(10)</span>
-            </button>
-            &nbsp;&nbsp;
-            <button className="btn btn-sm btn-outline-primary">
-              <i className="ion-heart"></i>
-              &nbsp; Favorite Post <span className="counter">(29)</span>
-            </button>
-          </div>
+          <h1>{article.title}</h1>
+          <ArticleMetaInfomation article={article} />
         </div>
       </div>
-
+      {/* Content */}
       <div className="container page">
         <div className="row article-content">
           <div className="col-md-12">
-            <p>Web development technologies have evolved at an incredible clip over the past few years.</p>
-            <h2 id="introducing-ionic">Introducing RealWorld.</h2>
-            <p>It's a great solution for learning how other frameworks work.</p>
+            <div>
+              <div ng-bind-html="::$ctrl.article.body" className="ng-binding">
+                <p>{article.body}</p>
+              </div>
+            </div>
+            <ArticleTagsList tags={article.tagList} />
           </div>
         </div>
-
         <hr />
-
         <div className="article-actions">
-          <div className="article-meta">
-            <a href="profile.html">
-              <img src="http://i.imgur.com/Qr71crq.jpg" />
-            </a>
-            <div className="info">
-              <a href="" className="author">
-                Eric Simons
-              </a>
-              <span className="date">January 20th</span>
-            </div>
-            <button className="btn btn-sm btn-outline-secondary">
-              <i className="ion-plus-round"></i>
-              &nbsp; Follow Eric Simons
-            </button>
-            &nbsp;
-            <button className="btn btn-sm btn-outline-primary">
-              <i className="ion-heart"></i>
-              &nbsp; Favorite Post <span className="counter">(29)</span>
-            </button>
-          </div>
+          <ArticleMetaInfomation article={article} />
         </div>
-
-        <div className="row">
-          <div className="col-xs-12 col-md-8 offset-md-2">
-            <form className="card comment-form">
-              <div className="card-block">
-                <textarea className="form-control" placeholder="Write a comment..." rows={8}></textarea>
-              </div>
-              <div className="card-footer">
-                <img src="http://i.imgur.com/Qr71crq.jpg" className="comment-author-img" />
-                <button className="btn btn-sm btn-primary">Post Comment</button>
-              </div>
-            </form>
-
-            <div className="card">
-              <div className="card-block">
-                <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
-              </div>
-              <div className="card-footer">
-                <a href="" className="comment-author">
-                  <img src="http://i.imgur.com/Qr71crq.jpg" className="comment-author-img" />
-                </a>
-                &nbsp;
-                <a href="" className="comment-author">
-                  Jacob Schmidt
-                </a>
-                <span className="date-posted">Dec 29th</span>
-              </div>
-            </div>
-
-            <div className="card">
-              <div className="card-block">
-                <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
-              </div>
-              <div className="card-footer">
-                <a href="" className="comment-author">
-                  <img src="http://i.imgur.com/Qr71crq.jpg" className="comment-author-img" />
-                </a>
-                &nbsp;
-                <a href="" className="comment-author">
-                  Jacob Schmidt
-                </a>
-                <span className="date-posted">Dec 29th</span>
-                <span className="mod-options">
-                  <i className="ion-edit"></i>
-                  <i className="ion-trash-a"></i>
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
+        <ArticleCommentsSection slug={article.slug} />
       </div>
     </div>
   )

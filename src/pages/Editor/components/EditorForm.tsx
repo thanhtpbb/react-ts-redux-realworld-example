@@ -1,10 +1,14 @@
+import { ROUTER } from '@/configs/router'
 import { useAppDispatch } from '@/hooks/redux'
 import { articleActions } from '@/redux/reducers/article/article.action'
+import { IArticle } from '@/types/models/IArticle'
 import { trimStringToArray } from '@/utils/helper'
-import React, { FormEvent, useRef } from 'react'
+import { FormEvent, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const EditorForm = () => {
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
 
   const titleRef = useRef<HTMLInputElement>(null)
   const descriptionRef = useRef<HTMLInputElement>(null)
@@ -22,14 +26,21 @@ const EditorForm = () => {
     const tagList = trimStringToArray(tags)
 
     dispatch(
-      articleActions.createArticle({
-        article: {
-          body,
-          description,
-          title,
-          tagList,
+      articleActions.createArticle(
+        {
+          article: {
+            body,
+            description,
+            title,
+            tagList,
+          },
         },
-      })
+        {
+          onSuccess: (result: IArticle) => {
+            navigate(`${ROUTER.ARTICLE_BASE}/${result.slug}`)
+          },
+        }
+      )
     )
   }
 

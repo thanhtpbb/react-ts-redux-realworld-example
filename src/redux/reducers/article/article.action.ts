@@ -20,7 +20,7 @@ const getFollowedUsersArticles =
       })
       cb?.onSuccess?.(result)
     } else {
-      dispatch({ type: ArticleActionType.ARTICLE_ACTION_PENDING })
+      dispatch({ type: ArticleActionType.ARTICLE_ACTION_FAILURE })
     }
   }
 
@@ -39,7 +39,7 @@ const getGlobalArticles =
       })
       cb?.onSuccess?.(result)
     } else {
-      dispatch({ type: ArticleActionType.ARTICLE_ACTION_PENDING })
+      dispatch({ type: ArticleActionType.ARTICLE_ACTION_FAILURE })
     }
   }
 
@@ -56,10 +56,29 @@ const createArticle =
         type: ArticleActionType.CREATE_ARTICLE_SUCCESS,
         payload: result,
       })
-      cb?.onSuccess?.(result)
+      cb?.onSuccess?.(result.article)
     } else {
-      dispatch({ type: ArticleActionType.ARTICLE_ACTION_PENDING })
+      dispatch({ type: ArticleActionType.ARTICLE_ACTION_FAILURE })
     }
   }
 
-export const articleActions = { getGlobalArticles, getFollowedUsersArticles, createArticle }
+const getArticle =
+  (slug: string, cb?: Callback): ArticleThunkAction =>
+  async (dispatch: AppDispatch) => {
+    dispatch({ type: ArticleActionType.ARTICLE_ACTION_PENDING })
+
+    const { response, error } = await apiCall({ ...API_URLS.ARTICLES.GET_ARTICLE(slug) })
+
+    if (!error && response?.status === 200) {
+      const result = response.data
+      dispatch({
+        type: ArticleActionType.GET_ARTICLE_SUCCESS,
+        payload: result,
+      })
+      cb?.onSuccess?.(result.article)
+    } else {
+      dispatch({ type: ArticleActionType.ARTICLE_ACTION_FAILURE })
+    }
+  }
+
+export const articleActions = { getGlobalArticles, getFollowedUsersArticles, createArticle, getArticle }
