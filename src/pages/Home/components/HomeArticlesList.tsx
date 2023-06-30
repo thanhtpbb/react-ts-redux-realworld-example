@@ -1,21 +1,28 @@
-import { ArticleType } from '@/types/others'
-import { useState } from 'react'
-import ArticleNavMenuItem from './ArticleNavMenuItem'
 import ArticlesList from '../../Article/components/ArticlesList'
+import ArticleNavMenuItem from './ArticleNavMenuItem'
 
-const HomeArticlesList = () => {
-  const [articlesType, setArticlesType] = useState<ArticleType>(ArticleType.FEED)
+interface HomeArticlesListProps {
+  selectedTag: string | undefined
+  articlesType: string
+  setArticlesType: React.Dispatch<React.SetStateAction<string>>
+}
 
+const HomeArticlesList: React.FC<HomeArticlesListProps> = ({ selectedTag, articlesType, setArticlesType }) => {
   return (
     <div className="col-md-9">
       <div className="feed-toggle">
         <ul className="nav nav-pills outline-active">
-          <ArticleNavMenuItem articlesType={articlesType} setArticlesType={setArticlesType} type={ArticleType.FEED}>
+          <ArticleNavMenuItem articlesType={articlesType} setArticlesType={setArticlesType} type={'FEED'}>
             Your Feed
           </ArticleNavMenuItem>
-          <ArticleNavMenuItem articlesType={articlesType} setArticlesType={setArticlesType} type={ArticleType.GLOBAL}>
+          <ArticleNavMenuItem articlesType={articlesType} setArticlesType={setArticlesType} type={'GLOBAL'}>
             Global Feed
           </ArticleNavMenuItem>
+          {selectedTag && (
+            <ArticleNavMenuItem articlesType={articlesType} setArticlesType={setArticlesType} type={selectedTag}>
+              #{selectedTag}
+            </ArticleNavMenuItem>
+          )}
         </ul>
       </div>
       <ArticlesList articlesType={articlesType} />

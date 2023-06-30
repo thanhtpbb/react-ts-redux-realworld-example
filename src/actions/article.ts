@@ -31,6 +31,18 @@ const getGlobalArticles = async (offset: number, cb?: Callback) => {
   cb?.onFinally?.()
 }
 
+const getArticlesByTag = async (tag: string, offset: number, cb?: Callback) => {
+  const { response, error } = await apiCall({ ...API_URLS.ARTICLES.GET_GLOBAL_ARTICLES(), params: { offset, tag } })
+
+  if (!error && response?.status === 200) {
+    const result = response.data
+    cb?.onSuccess?.(result)
+  } else {
+    cb?.onError?.()
+  }
+  cb?.onFinally?.()
+}
+
 const getFavoritedArticles = async (username: string, offset: number, cb?: Callback) => {
   const { response, error } = await apiCall({
     ...API_URLS.ARTICLES.GET_GLOBAL_ARTICLES(),
@@ -117,4 +129,5 @@ export const articleActions = {
   getArticle,
   getFavoritedArticles,
   getSelfArticles,
+  getArticlesByTag,
 }

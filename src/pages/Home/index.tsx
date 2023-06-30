@@ -1,8 +1,11 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import HomeArticlesList from './components/HomeArticlesList'
 import TagList from './components/TagList'
 
 const Home = () => {
+  const [selectedTag, setSelectedTag] = useState<string>()
+  const [articlesType, setArticlesType] = useState<string>('FEED')
+
   useEffect(() => {
     document.title = 'Home — Conduit'
   }, [])
@@ -18,12 +21,12 @@ const Home = () => {
 
       <div className="container page">
         <div className="row">
-          <HomeArticlesList />
+          <HomeArticlesList selectedTag={selectedTag} articlesType={articlesType} setArticlesType={setArticlesType} />
 
           <div className="col-md-3">
             <div className="sidebar">
               <p>Popular Tags</p>
-              <TagList />
+              <TagList setSelectedTag={setSelectedTag} setArticlesType={setArticlesType} />
             </div>
           </div>
         </div>

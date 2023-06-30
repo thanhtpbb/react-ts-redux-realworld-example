@@ -1,8 +1,14 @@
 import { tagActions } from '@/actions/tag'
 import PageLoader from '@/components/PageLoader'
 import { useEffect, useState } from 'react'
+import TagItem from './TagItem'
 
-const TagList = () => {
+interface TagListProps {
+  setSelectedTag: React.Dispatch<React.SetStateAction<string | undefined>>
+  setArticlesType: React.Dispatch<React.SetStateAction<string>>
+}
+
+const TagList: React.FC<TagListProps> = ({ setSelectedTag, setArticlesType }) => {
   const [tags, setTags] = useState<string[]>([])
   const [isFetchingTags, setIsFetchingTags] = useState<boolean>(false)
 
@@ -23,13 +29,11 @@ const TagList = () => {
   }
 
   return (
-    <div className="tag-list">
+    <ul className="tag-list">
       {tags.map((tag, idx) => (
-        <div key={`tag-list-${idx}`} className="tag-pill tag-default">
-          {tag}
-        </div>
+        <TagItem setSelectedTag={setSelectedTag} setArticleType={setArticlesType} key={`tag-list-${idx}`} tag={tag} />
       ))}
-    </div>
+    </ul>
   )
 }
 

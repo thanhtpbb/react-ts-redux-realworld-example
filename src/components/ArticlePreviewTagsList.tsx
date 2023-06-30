@@ -5,11 +5,13 @@ interface ArticlePreviewTagsListProps {
   article: IArticle
 }
 const ArticlePreviewTagsList: React.FC<ArticlePreviewTagsListProps> = ({ article }) => {
-  const { tagList } = article
+  const { tagList, slug } = article
   return (
     <ul className="tag-list" style={{ float: 'right' }}>
-      {tagList.map(tag => (
-        <li className="tag-default tag-pill tag-outline ng-binding ng-scope">{tag}</li>
+      {tagList.map((tag, idx) => (
+        <li key={`article-tag-${idx}-${slug}`} className="tag-default tag-pill tag-outline ng-binding ng-scope">
+          {tag}
+        </li>
       ))}
     </ul>
   )

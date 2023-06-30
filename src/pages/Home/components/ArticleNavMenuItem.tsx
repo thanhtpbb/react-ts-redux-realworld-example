@@ -1,11 +1,10 @@
-import { ArticleType } from '@/types/others'
 import React, { ReactNode } from 'react'
 
 interface ArticleNavMenuItemProps {
-  type: ArticleType
+  type: string
   children: ReactNode
-  articlesType: ArticleType
-  setArticlesType: React.Dispatch<React.SetStateAction<ArticleType>>
+  articlesType: string
+  setArticlesType: React.Dispatch<React.SetStateAction<string>>
 }
 
 const ArticleNavMenuItem: React.FC<ArticleNavMenuItemProps> = ({ children, articlesType, setArticlesType, type }) => (

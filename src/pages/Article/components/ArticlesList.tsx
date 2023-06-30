@@ -3,13 +3,12 @@ import PageLoader from '@/components/PageLoader'
 import { GetArticlesResponse } from '@/configs/api/response'
 import { LIST_LIMIT } from '@/configs/constant'
 import { IArticle } from '@/types/models/IArticle'
-import { ArticleType } from '@/types/others'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import ArticlePreviewItem from '../../../components/ArticlePreviewItem'
 
 interface ArticlesListProps {
-  articlesType: ArticleType
+  articlesType: string
 }
 
 const ArticlesList: React.FC<ArticlesListProps> = ({ articlesType }) => {
@@ -31,22 +30,22 @@ const ArticlesList: React.FC<ArticlesListProps> = ({ articlesType }) => {
     const onFinally = () => setIsFetchingArticles(false)
 
     switch (articlesType) {
-      case ArticleType.GLOBAL:
+      case 'GLOBAL':
         articleActions.getGlobalArticles(offset, { onSuccess, onFinally })
         break
-      case ArticleType.FEED:
+      case 'FEED':
         articleActions.getFollowedUsersArticles(offset, { onSuccess, onFinally })
         break
-      case ArticleType.FAVORITED:
+      case 'FAVORITED':
         if (!username) break
         articleActions.getFavoritedArticles(username, offset, { onSuccess, onFinally })
         break
-      case ArticleType.SELF:
+      case 'SELF':
         if (!username) break
         articleActions.getSelfArticles(username, offset, { onSuccess, onFinally })
         break
       default:
-        setIsFetchingArticles(false)
+        articleActions.getArticlesByTag(articlesType, offset, { onSuccess, onFinally })
     }
   }
 
