@@ -19,6 +19,7 @@ const followUser = async (username: string, cb?: Callback) => {
   } else {
     cb?.onError?.()
   }
+  cb?.onFinally?.()
 }
 
 const unfollowUser = async (username: string, cb?: Callback) => {
@@ -28,6 +29,7 @@ const unfollowUser = async (username: string, cb?: Callback) => {
   } else {
     cb?.onError?.()
   }
+  cb?.onFinally?.()
 }
 
 export const profileActions = { getProfile, followUser, unfollowUser }

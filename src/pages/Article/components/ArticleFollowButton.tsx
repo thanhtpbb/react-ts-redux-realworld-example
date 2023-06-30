@@ -1,21 +1,28 @@
 import { profileActions } from '@/actions/profile'
 import { IProfile } from '@/types/models/IProfile'
-import React from 'react'
+import React, { useState } from 'react'
 
 interface ArticleFollowButtonProps {
   author: IProfile
 }
 const ArticleFollowButton: React.FC<ArticleFollowButtonProps> = ({ author }) => {
+  const [isLoadingFollow, setIsLoadingFollow] = useState<boolean>(false)
+
   const handleFollowButtonClick = () => {
+    setIsLoadingFollow(true)
+    const onFinally = () => setIsLoadingFollow(false)
+
     if (author.following) {
-      profileActions.unfollowUser(author.username)
+      profileActions.unfollowUser(author.username, { onFinally })
+
       return
     }
-    profileActions.followUser(author.username)
+    profileActions.followUser(author.username, { onFinally })
   }
 
   return (
     <button
+      disabled={isLoadingFollow}
       onClick={handleFollowButtonClick}
       className={`btn btn-sm ${author.following ? `btn-secondary` : `btn-outline-secondary`} action-btn`}
     >
