@@ -37,7 +37,7 @@ const LoginForm = () => {
   }
 
   useLayoutEffect(() => {
-    document.title = 'Login - Conduit'
+    document.title = 'Login - Vaults'
   }, [])
 
   return (
